@@ -1,13 +1,25 @@
-import L from 'leaflet';
-import type { FeatureCollection, GeoJsonObject } from 'geojson';
+import L, { Layer } from 'leaflet';
+import type { Feature, FeatureCollection, Geometry} from 'geojson';
 import 'leaflet/dist/leaflet.css'
 import countyJsonRaw from './data/overlay.json'
 
-function onEachFeature(feature, layer){
-    var PopupContent = "<b>"+feature.properties.CountyDisplayName+"</b> <br>\
+type CountyProps = {
+  CountyDisplayName?: string;
+  HasLocationRestrictions?: number | boolean | "0" | "1";
+  LocationRestrictions?: string;
+};
+
+function onEachFeature(feature: Feature<Geometry, CountyProps>, layer: Layer){
+    var PopupContent = "<b>" + feature?.properties?.CountyDisplayName+"</b> <br>\
                         <b>County Solar Restrictions:</b>"
 
-    if(feature.properties && feature.properties.HasLocationRestrictions){
+    const hasRestrictions = feature.properties?.HasLocationRestrictions;
+    const isRestricted =
+    hasRestrictions === 1 ||
+    hasRestrictions === true ||
+    hasRestrictions === "1";
+
+    if(isRestricted && feature.properties.HasLocationRestrictions){
         PopupContent += "<b>Location Restrictions:</b> <br>" + feature.properties.LocationRestrictions
     }
 
@@ -25,10 +37,11 @@ export function setupMap(){
 
     L.geoJSON(countyJson, {
         onEachFeature: onEachFeature,
-        style: function(feature) {
-            switch(feature?.properties.HasLocationRestrictions){
+        style: (feature) => {
+            switch(feature?.properties?.HasLocationRestrictions){
                 case 1: return {"color": "#ff0000"};
             }
+            return {"color": "#0000ff"}; 
         }
     }).addTo(map)
 
