@@ -5,8 +5,12 @@ import countyJsonRaw from './data/overlay.json'
 
 type CountyProps = {
   CountyDisplayName?: string;
-  HasLocationRestrictions?: number | boolean | "0" | "1";
+  HasLocationRestrictions?: number;
   LocationRestrictions?: string;
+  HasAcreageRestrictions?: number;
+  AcreageRestrictions?: string;
+  HasGroundCoverRestrictions?: number;
+  GroundCoverRestrictions?: string;
   Website: string;
 };
 
@@ -14,14 +18,16 @@ function onEachFeature(feature: Feature<Geometry, CountyProps>, layer: Layer){
     var PopupContent = `<a href=${feature?.properties?.Website} style="font-weight: bold"> ${feature?.properties?.CountyDisplayName} </a> <br>\
                         <br>`
 
-    const hasLocationRestrictions = feature.properties?.HasLocationRestrictions;
-    const isLocationRestricted =
-    hasLocationRestrictions === 1 ||
-    hasLocationRestrictions === true ||
-    hasLocationRestrictions === "1";
+    if(feature.properties?.HasLocationRestrictions === 1){
+        PopupContent += "<b>Location Restrictions:</b> <br>" + feature.properties.LocationRestrictions + '<br>'
+    }
 
-    if(isLocationRestricted && feature.properties.HasLocationRestrictions){
-        PopupContent += "<b>Location Restrictions:</b> <br>" + feature.properties.LocationRestrictions
+    if(feature.properties?.HasAcreageRestrictions === 1){
+        PopupContent += "<b>Acreage Restrictions:</b> <br>" + feature.properties.AcreageRestrictions + '<br>'
+    }
+
+    if(feature.properties?.HasGroundCoverRestrictions === 1){
+        PopupContent += "<b>Ground Cover Restrictions:</b> <br>" + feature.properties.GroundCoverRestrictions + '<br>'
     }
 
     layer.bindPopup(PopupContent)
@@ -39,10 +45,16 @@ export function setupMap(){
     L.geoJSON(countyJson, {
         onEachFeature: onEachFeature,
         style: (feature) => {
-            switch(feature?.properties?.HasLocationRestrictions){
-                case 1: return {"color": "#ff0000"};
+            if(feature?.properties?.HasLocationRestrictions === 1){
+                return {"color": "#ff0000"};
             }
-            return {"color": "#0000ff"}; 
+            if(feature?.properties?.HasAcreageRestrictions === 1){
+                return {"color": "#FF7F50"};
+            }
+            if(feature?.properties?.HasGroundCoverRestrictions === 1){
+                return {"color": "#0000FF"};
+            }
+            return {"color": "#50C878"}; 
         }
     }).addTo(map)
 
