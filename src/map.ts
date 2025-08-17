@@ -11,6 +11,8 @@ type CountyProps = {
   AcreageRestrictions?: string;
   HasGroundCoverRestrictions?: number;
   GroundCoverRestrictions?: string;
+  HasHeightRestrictions?: number;
+  HeightRestrictions?: string;
   Website: string;
 };
 
@@ -28,6 +30,10 @@ function onEachFeature(feature: Feature<Geometry, CountyProps>, layer: Layer){
 
     if(feature.properties?.HasGroundCoverRestrictions === 1){
         PopupContent += "<b>Ground Cover Restrictions:</b> <br>" + feature.properties.GroundCoverRestrictions + '<br>'
+    }
+
+    if(feature.properties?.HasHeightRestrictions === 1){
+        PopupContent += "<b>Height Restrictions:</b> <br>" + feature.properties.HeightRestrictions + '<br>'
     }
 
     layer.bindPopup(PopupContent)
@@ -53,6 +59,9 @@ export function setupMap(){
             }
             if(feature?.properties?.HasGroundCoverRestrictions === 1){
                 return {"color": "#0000FF"};
+            }
+            if(feature?.properties?.HasHeightRestrictions === 1){
+                return {"color": "#AA336A"};
             }
             return {"color": "#50C878"}; 
         }
