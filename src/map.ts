@@ -7,19 +7,20 @@ type CountyProps = {
   CountyDisplayName?: string;
   HasLocationRestrictions?: number | boolean | "0" | "1";
   LocationRestrictions?: string;
+  Website: string;
 };
 
 function onEachFeature(feature: Feature<Geometry, CountyProps>, layer: Layer){
-    var PopupContent = "<b>" + feature?.properties?.CountyDisplayName+"</b> <br>\
-                        <b>County Solar Restrictions:</b>"
+    var PopupContent = `<a href=${feature?.properties?.Website} style="font-weight: bold"> ${feature?.properties?.CountyDisplayName} </a> <br>\
+                        <br>`
 
-    const hasRestrictions = feature.properties?.HasLocationRestrictions;
-    const isRestricted =
-    hasRestrictions === 1 ||
-    hasRestrictions === true ||
-    hasRestrictions === "1";
+    const hasLocationRestrictions = feature.properties?.HasLocationRestrictions;
+    const isLocationRestricted =
+    hasLocationRestrictions === 1 ||
+    hasLocationRestrictions === true ||
+    hasLocationRestrictions === "1";
 
-    if(isRestricted && feature.properties.HasLocationRestrictions){
+    if(isLocationRestricted && feature.properties.HasLocationRestrictions){
         PopupContent += "<b>Location Restrictions:</b> <br>" + feature.properties.LocationRestrictions
     }
 
