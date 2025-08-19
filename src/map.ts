@@ -34,6 +34,10 @@ function onEachFeature(feature: Feature<Geometry, CountyProps>, layer: Layer){
         PopupContent += "<b>Ground Cover Restrictions:</b> <br>" + feature.properties.GroundCoverRestrictions + '<br>'
     }
 
+    if(feature.properties?.HasScreeningRestrictions === 1){
+        PopupContent += "<b>Screening Restrictions:</b> <br>" + feature.properties.ScreeningRestrictions + '<br>'
+    }
+
     if(feature.properties?.HasHeightRestrictions === 1){
         PopupContent += "<b>Height Restrictions:</b> <br>" + feature.properties.HeightRestrictions + '<br>'
     }
@@ -67,6 +71,7 @@ export function setupMap(){
             if(feature?.properties?.HasLocationRestrictions === 1 ||
                feature?.properties?.HasAcreageRestrictions === 1 ||
                feature?.properties?.HasGroundCoverRestrictions === 1 ||
+               feature?.properties?.HasScreeningRestrictions === 1 ||
                feature?.properties?.HasHeightRestrictions === 1
             ){
                 return {"color": "#FF0000"}
@@ -109,7 +114,7 @@ export function setupMap(){
         onEachFeature: onEachFeature,
         style: (feature) => {
             if(feature?.properties?.HasScreeningRestrictions === 1){
-                return {"color": "#AA336A"};
+                return {"color": "#DE3163"};
             }
             return {"color": "#50C878"};
         }
