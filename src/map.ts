@@ -74,7 +74,8 @@ export function setupMap(){
                feature?.properties?.HasScreeningRestrictions === 1 ||
                feature?.properties?.HasHeightRestrictions === 1
             ){
-                return {"color": "#FF0000"}
+                return {"fillColor": "#FF0000",
+                        "color": "#50C878"}
             }
             return {"color": "#50C878"};
         }
@@ -84,7 +85,8 @@ export function setupMap(){
         onEachFeature : onEachFeature,
         style: (feature) => {
             if(feature?.properties?.HasLocationRestrictions === 1){
-                return {"color": "#ff0000"};
+                return {"fillColor": "#ff0000",
+                        "color": "#50C878"};
             }
             return {"color": "#50C878"};
         }
@@ -94,7 +96,8 @@ export function setupMap(){
         onEachFeature : onEachFeature,
         style: (feature) => {
             if(feature?.properties?.HasAcreageRestrictions === 1){
-                return {"color": "#FF7F50"};
+                return {"fillColor": "#FF7F50",
+                        "color": "#50C878"};
             }
             return {"color": "#50C878"};
         }
@@ -104,7 +107,8 @@ export function setupMap(){
         onEachFeature : onEachFeature,
         style: (feature) => {
             if(feature?.properties?.HasGroundCoverRestrictions === 1){
-                return {"color": "#0000FF"};
+                return {"fillColor": "#0000FF",
+                        "color": "#50C878"};
             }
             return {"color": "#50C878"};
         }
@@ -114,7 +118,8 @@ export function setupMap(){
         onEachFeature: onEachFeature,
         style: (feature) => {
             if(feature?.properties?.HasScreeningRestrictions === 1){
-                return {"color": "#DE3163"};
+                return {"fillColor": "#DE3163",
+                        "color": "#50C878"};
             }
             return {"color": "#50C878"};
         }
@@ -124,7 +129,8 @@ export function setupMap(){
         onEachFeature: onEachFeature,
         style: (feature) => {
             if(feature?.properties?.HasHeightRestrictions === 1){
-                return {"color": "#AA336A"};
+                return {"fillColor": "#AA336A",
+                        "color": "#50C878"};
             }
             return {"color": "#50C878"};
         }

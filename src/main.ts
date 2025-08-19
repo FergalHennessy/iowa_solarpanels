@@ -2,7 +2,7 @@
 // import type { Feature, FeatureCollection, Geometry} from 'geojson';
 import './style.css'
 import { setupMap } from './map.ts'
-import { setupHeader } from './header.ts'
+// import { setupHeader } from './header.ts'
 
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
@@ -17,7 +17,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     <h1>Iowa Solar Zoning Regulations Map</h1>
 
     <br>
-    <label for="showLayer">Filter Counties By Restriction:</label>
+    <label for="showLayer">Use the following dropdown menu to highlight counties by category of regulation.</label>
     <br>
     <select name="Type Of Restriction" id="showLayer"> 
       <option value="any"        > Any          </option>
@@ -37,4 +37,4 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
 setupMap()
 
-setupHeader(); 
+// setupHeader(); 
