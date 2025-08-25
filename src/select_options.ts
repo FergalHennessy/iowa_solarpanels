@@ -1,5 +1,5 @@
 import countyJSONRaw from './data/overlay.json'
-import type { Feature, FeatureCollection, Geometry} from 'geojson';
+import type {FeatureCollection, Geometry} from 'geojson';
 
 type CountyProps = {
   CountyDisplayName?: string;
