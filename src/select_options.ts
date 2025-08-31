@@ -13,7 +13,7 @@ type CountyProps = {
   ScreeningRestrictions?: string;
   HasHeightRestrictions?: number;
   HeightRestrictions?: string;
-  Website: string;
+  CountyWebsite: string;
 };
 
 export function list_options(){

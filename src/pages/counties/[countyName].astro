@@ -1,0 +1,73 @@
+---
+import type { Feature, FeatureCollection, Geometry} from 'geojson';
+
+type CountyProps = {
+  CountyWebsite: string;
+  CountyRegulationsWebsite: string;
+  CountyDisplayName: string;
+  CountyName: string;
+  HasLocationRestrictions?: number;
+  LocationRestrictions?: string;
+  HasAcreageRestrictions?: number;
+  AcreageRestrictions?: string;
+  HasGroundCoverRestrictions?: number;
+  GroundCoverRestrictions?: string;
+  HasScreeningRestrictions?: number;
+  ScreeningRestrictions?: string;
+  HasHeightRestrictions?: number;
+  HeightRestrictions?: string;
+};
+
+
+export async function getStaticPaths() {
+    const data = await import("../../data/overlay.json")
+    const counties = data as FeatureCollection<Geometry, CountyProps>
+    return counties.features.map((c : Feature<Geometry, CountyProps>) => ({
+        params: {countyName: c.properties.CountyName},
+        props: {
+          website: c.properties.CountyWebsite, 
+          regulationsDoc: c.properties.CountyRegulationsWebsite,
+          countyName: c.properties.CountyName, 
+          countyDisplayName: c.properties.CountyDisplayName,
+          hasLocationRestriction: c.properties.HasLocationRestrictions,
+          locationRestriction: c.properties.LocationRestrictions,
+          hasAcreageRestriction: c.properties.HasAcreageRestrictions,
+          acreageRestriction: c.properties.AcreageRestrictions,
+          hasGroundCoverRestriction: c.properties.HasGroundCoverRestrictions,
+          groundCoverRestriction: c.properties.GroundCoverRestrictions,
+          hasScreeningRestriction: c.properties.HasScreeningRestrictions,
+          screeningRestriction: c.properties.ScreeningRestrictions,
+          hasHeightRestriction: c.properties.HasHeightRestrictions,
+          heightRestriction: c.properties.HeightRestrictions
+        }
+    }))
+}
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/src/sun.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🌞 Iowa Solar</title>
+  </head>
+  <body>
+    <div id="app" 
+      data-countyWebsite = {Astro.props.website}
+      data-countyRegulationsDoc = {Astro.props.regulationsDoc}
+      data-countyDisplayName={Astro.props.countyDisplayName} 
+      data-hasLocationRestriction={Astro.props.hasLocationRestriction}
+      data-locationRestriction={Astro.props.locationRestriction}
+      data-hasAcreageRestriction={Astro.props.hasAcreageRestriction}
+      data-acreageRestriction={Astro.props.acreageRestriction}
+      data-hasGroundCoverRestriction={Astro.props.hasGroundCoverRestriction}
+      data-groundCoverRestriction={Astro.props.groundCoverRestriction}
+      data-hasScreeningRestriction={Astro.props.hasScreeningRestriction}
+      data-screeningRestriction={Astro.props.hasLocationRestriction}
+      data-hasHeightRestriction={Astro.props.hasHeightRestriction}
+      data-heightRestriction={Astro.props.heightRestriction}>
+    </div>
+    <script type="module" src="/src/county.ts"></script>
+  </body>
+</html>

@@ -1,10 +1,11 @@
 import L, { Layer, TileLayer } from 'leaflet';
 import type { Feature, FeatureCollection, Geometry} from 'geojson';
 import 'leaflet/dist/leaflet.css'
-import countyJsonRaw from './data/overlay.json'
+import countyJsonRaw from './data/overlay.json' assert {type : 'json'}
 
 type CountyProps = {
-  CountyDisplayName?: string;
+  CountyDisplayName: string;
+  CountyName: string;
   HasLocationRestrictions?: number;
   LocationRestrictions?: string;
   HasAcreageRestrictions?: number;
@@ -15,11 +16,11 @@ type CountyProps = {
   ScreeningRestrictions?: string;
   HasHeightRestrictions?: number;
   HeightRestrictions?: string;
-  Website: string;
+  CountyWebsite: string;
 };
 
 function onEachFeature(feature: Feature<Geometry, CountyProps>, layer: Layer){
-    var PopupContent = `<a href=${feature?.properties?.Website} style="font-weight: bold"> ${feature?.properties?.CountyDisplayName} </a> <br>\
+    var PopupContent = `<a href=/counties/${feature?.properties.CountyName} style="font-weight: bold"> ${feature?.properties?.CountyDisplayName} </a> <br>\
                         <br>`
 
     let flag = false;
@@ -65,44 +66,45 @@ function showLayer(map: L.Map, shownLayer: L.GeoJSON, background_layer: TileLaye
     map.addLayer(shownLayer);
 }
 
-export function setupMap(){
+const countyJson = countyJsonRaw as FeatureCollection<Geometry, CountyProps>
+
+function gen_restrict_layer(base_color : string, highlight_color : string, layer_props : (keyof CountyProps)[]) {
+    return L.geoJson(countyJson, {
+        onEachFeature: onEachFeature,
+        style: (feature) => {
+            for(const layer_prop of layer_props){
+                if(feature?.properties?.[layer_prop] === 1){
+                    return {"fillColor": highlight_color,
+                            "color": base_color};
+                }
+            }
+            return {"color": base_color};
+        }
+    })
+}
+
+function gen_county_layer(base_color : string, highlight_color: string, county_display_name: string, exclude_others = false){
+    return L.geoJSON(exclude_others ? countyJsonRaw.features.find((feature) => feature.properties.CountyDisplayName === county_display_name) as Feature : countyJson, {
+        onEachFeature: onEachFeature,
+        style: (feature) => {
+            if(feature?.properties?.CountyDisplayName === county_display_name){
+                return {"fillColor": highlight_color,
+                            "color": base_color};
+            }
+            return {"color": base_color}
+        }
+    })
+}
+
+
+export function setupStateMap(){
     var map = L.map('map', {zoomSnap: 0.25}).setView([41.95, -93.098], 7.25);
     
     let background_layer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     })
-
-    let countyJson = countyJsonRaw as FeatureCollection
-
-    function gen_restrict_layer(base_color : string, highlight_color : string, layer_props : (keyof CountyProps)[]) {
-        return L.geoJson(countyJson, {
-            onEachFeature: onEachFeature,
-            style: (feature) => {
-                for(const layer_prop of layer_props){
-                    if(feature?.properties?.[layer_prop] === 1){
-                        return {"fillColor": highlight_color,
-                                "color": base_color};
-                    }
-                }
-                return {"color": base_color};
-            }
-        })
-    }
-
-    function gen_county_layer(base_color : string, highlight_color: string, county_display_name: string){
-        return L.geoJSON(countyJson, {
-            onEachFeature: onEachFeature,
-            style: (feature) => {
-                if(feature?.properties?.CountyDisplayName === county_display_name){
-                    return {"fillColor": highlight_color,
-                                "color": base_color};
-                }
-                return {"color": base_color}
-            }
-        })
-    }
-
+    
     map.addLayer(background_layer);
     map.addLayer(gen_restrict_layer("#50C878", "#FF0000", ["HasLocationRestrictions", "HasAcreageRestrictions", "HasGroundCoverRestrictions", "HasScreeningRestrictions", "HasHeightRestrictions"]));
 
@@ -132,3 +134,17 @@ export function setupMap(){
     
 }
 
+export function setupCountyMap(countyDisplayName: string){
+    var map = L.map('map', {zoomSnap: 0.25}).setView([41.95, -93.098], 7.25);
+    
+    let background_layer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    })
+
+    map.addLayer(background_layer);
+    map.addLayer(gen_county_layer("#50C878", "#FF5F1F", countyDisplayName, true));
+    const county_layer = gen_county_layer("#50C878", "#FF5F1F", countyDisplayName, true)
+
+    map.fitBounds(county_layer.getBounds());
+}

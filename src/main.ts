@@ -1,7 +1,5 @@
-// import L, { Layer } from 'leaflet';
-// import type { Feature, FeatureCollection, Geometry} from 'geojson';
 import './style.css'
-import { setupMap } from './map.ts'
+import { setupStateMap } from './state_map.ts'
 import { list_options } from './select_options.ts'
 
 
@@ -45,4 +43,4 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   
 `
 
-setupMap()
+setupStateMap()
