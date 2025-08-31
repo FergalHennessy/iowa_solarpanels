@@ -68,6 +68,9 @@ export async function getStaticPaths() {
       data-hasHeightRestriction={Astro.props.hasHeightRestriction}
       data-heightRestriction={Astro.props.heightRestriction}>
     </div>
-    <script type="module" src="/src/county.ts"></script>
+    <script type="module">
+      import {main} from "../../county.ts";
+      main();
+    </script>
   </body>
 </html>
