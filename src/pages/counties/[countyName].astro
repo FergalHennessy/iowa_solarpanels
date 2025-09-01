@@ -64,13 +64,12 @@ export async function getStaticPaths() {
       data-hasGroundCoverRestriction={Astro.props.hasGroundCoverRestriction}
       data-groundCoverRestriction={Astro.props.groundCoverRestriction}
       data-hasScreeningRestriction={Astro.props.hasScreeningRestriction}
-      data-screeningRestriction={Astro.props.hasLocationRestriction}
+      data-screeningRestriction={Astro.props.screeningRestriction}
       data-hasHeightRestriction={Astro.props.hasHeightRestriction}
       data-heightRestriction={Astro.props.heightRestriction}>
     </div>
     <script>
-      import {main} from "../../county.ts";
-      main();
+      import "../../county.ts";
     </script>
   </body>
 </html>
