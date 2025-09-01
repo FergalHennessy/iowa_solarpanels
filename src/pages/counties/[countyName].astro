@@ -50,9 +50,10 @@ export async function getStaticPaths() {
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/src/sun.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🌞 Iowa Solar</title>
+    <title>{Astro.props.countyDisplayName} Solar Regulations</title>
   </head>
   <body>
+    
     <div id="app" 
       data-countyWebsite = {Astro.props.website}
       data-countyRegulationsDoc = {Astro.props.regulationsDoc}

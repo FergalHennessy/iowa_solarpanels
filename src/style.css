@@ -26,11 +26,13 @@ a:hover {
 
 #content {
   margin: 0;
+  margin-left: 3rem;
   min-width: 320px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 
 h1 {
@@ -41,7 +43,17 @@ h1 {
 #app {
   max-width: 1280px;
   margin: 0 auto;
-  text-align: center;
+  text-align: left;
+  position: relative;
+}
+
+#back-button {
+  position: absolute;
+  left: 5em;                  
+  top: 4.8em;               
+  display: inline-block;
+  width: 96px;
+  height: auto;
 }
 
 @media (prefers-color-scheme: light) {
