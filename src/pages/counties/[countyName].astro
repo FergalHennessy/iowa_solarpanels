@@ -23,7 +23,7 @@ export async function getStaticPaths() {
     const data = await import("../../data/overlay.json")
     const counties = data as FeatureCollection<Geometry, CountyProps>
     return counties.features.map((c : Feature<Geometry, CountyProps>) => ({
-        params: {countyName: c.properties.CountyName},
+        params: {countyName: c.properties.CountyName.replaceAll(" ", "-")},
         props: {
           website: c.properties.CountyWebsite, 
           regulationsDoc: c.properties.CountyRegulationsWebsite,
