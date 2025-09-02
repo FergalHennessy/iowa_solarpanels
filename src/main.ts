@@ -14,7 +14,8 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     <h1>Iowa Solar Zoning Regulations Map</h1>
 
     <br>
-    <label>Use the following dropdown menu to highlight counties by category of regulation.</label>
+    <label>You can click on any county on the following map to access more information about the county. </label>
+    <label>Or you can use the dropdown menu to highlight counties by category of regulation.</label>
     <br>
 
 

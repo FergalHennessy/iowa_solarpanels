@@ -20,8 +20,9 @@ type CountyProps = {
 };
 
 function onEachFeature(feature: Feature<Geometry, CountyProps>, layer: Layer){
-    var PopupContent = `<a href=/counties/${feature?.properties.CountyName.replaceAll(" ", "-")} style="font-weight: bold"> ${feature?.properties?.CountyDisplayName} </a> <br>\
-                        <br>`
+    var PopupContent = `<a href=/counties/${feature?.properties.CountyName.replaceAll(" ", "-")} style="font-weight: bold"> ${feature?.properties?.CountyDisplayName} </a> 
+    <p> (For more detailed information about this county and source of information, please click on the county name above.) </p>\
+                        `
 
     let flag = false;
 
